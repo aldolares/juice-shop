@@ -33,9 +33,17 @@ jobs:
           az group create --name ${{ secrets.PRODRESOURCEGROUP }} --location ${{ secrets.LOCATION }} --tags LabInstance=${{ secrets.LABINSTANCEID }}
         azcliversion: latest
 
+    - name: Validate Resource Group Region
+      run: |
+        actual_location=$(az group show --name ${{ secrets.DEVRESOURCEGROUP }} --query location -o tsv)
+        if [ "$actual_location" != "${{ secrets.LOCATION }}" ]; then
+          echo "ERROR: Resource group is in $actual_location but expected ${{ secrets.LOCATION }}"
+          exit 1
+        fi
+
     - uses: azure/cli@v1.0.0
       with:
-        inlineScript: az deployment group create --resource-group ${{ secrets.DEVRESOURCEGROUP }} --name deployinfradev --template-file ARM-DevSecOps.json
+        inlineScript: az deployment group create --resource-group ${{ secrets.DEVRESOURCEGROUP }} --name deployinfradev --template-file ARM-DevSecOps.json --parameters location=${{ secrets.LOCATION }}
         azcliversion: latest
 
   DeployProdInfrastructure_Stage_DeployInfrastructure:
