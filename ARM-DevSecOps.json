@@ -34,8 +34,7 @@
       "defaultValue": "[subscription().tenantId]"
     },
     "location": {
-      "type": "string",
-      "defaultValue": "[resourceGroup().location]"
+      "type": "string"
     }
   },
   "variables": {
@@ -341,3 +340,4 @@
     }
   }
 }
+
