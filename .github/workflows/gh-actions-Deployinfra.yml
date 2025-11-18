@@ -25,6 +25,14 @@ jobs:
         allow-no-subscriptions: true
 
     - uses: azure/cli@v1.0.0
+      name: Delete Resource Group
+      with:
+        inlineScript: |
+          az group delete --name ${{ secrets.DEVRESOURCEGROUP }} --yes --no-wait
+        azcliversion: latest
+
+
+    - uses: azure/cli@v1.0.0
       name: Create Resource Group
       with:
         inlineScript: |
